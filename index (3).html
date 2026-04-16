@@ -1,0 +1,1434 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chai Chronicles — Hyderabad's Finest Irani Chai</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400;1,600&family=Lora:ital,wght@0,400;0,500;1,400;1,500&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        :root {
+            --bg:          #FBF5E8;
+            --bg-dark:     #1A0E07;
+            --text:        #231109;
+            --text-mid:    #5C3A28;
+            --text-light:  #9B6B4A;
+            --amber:       #C47A2B;
+            --amber-light: #E09A45;
+            --gold:        #D4A240;
+            --cream:       #F0E4CC;
+            --cream-dark:  #DDD0B5;
+            --white:       #FEFCF6;
+            --ff-display:  'Playfair Display', Georgia, serif;
+            --ff-body:     'Lora', Georgia, serif;
+            --ease:        cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: var(--ff-body);
+            background: var(--bg);
+            color: var(--text);
+            overflow-x: hidden;
+            line-height: 1.7;
+        }
+
+        /* ────────────────────────────────────────────
+           NAV
+        ──────────────────────────────────────────── */
+        nav {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            z-index: 100;
+            padding: 20px 6%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background 0.4s var(--ease), box-shadow 0.4s var(--ease);
+        }
+
+        nav.scrolled {
+            background: rgba(251, 245, 232, 0.96);
+            backdrop-filter: blur(14px);
+            box-shadow: 0 2px 30px rgba(35, 17, 9, 0.09);
+        }
+
+        .nav-logo {
+            font-family: var(--ff-display);
+            font-size: 1.45rem;
+            font-weight: 700;
+            color: var(--white);
+            text-decoration: none;
+            letter-spacing: -0.01em;
+            transition: color 0.3s;
+        }
+
+        nav.scrolled .nav-logo { color: var(--bg-dark); }
+        .nav-logo span { color: var(--amber); }
+
+        .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+
+        .nav-links a {
+            font-family: var(--ff-body);
+            font-size: 0.8rem;
+            color: rgba(254,252,246,0.8);
+            text-decoration: none;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            position: relative;
+            transition: color 0.3s;
+        }
+
+        nav.scrolled .nav-links a { color: var(--text-mid); }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -3px; left: 0;
+            width: 0; height: 1px;
+            background: var(--amber);
+            transition: width 0.3s var(--ease);
+        }
+
+        .nav-links a:hover { color: var(--amber) !important; }
+        .nav-links a:hover::after { width: 100%; }
+
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+            padding: 5px;
+            background: none;
+            border: none;
+        }
+
+        .hamburger span {
+            display: block;
+            width: 24px; height: 2px;
+            background: var(--white);
+            transition: background 0.3s;
+        }
+
+        nav.scrolled .hamburger span { background: var(--text); }
+
+        /* ────────────────────────────────────────────
+           MOBILE MENU
+        ──────────────────────────────────────────── */
+        .mobile-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: var(--bg-dark);
+            z-index: 200;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        .mobile-overlay.open { display: flex; }
+
+        .mobile-overlay a {
+            font-family: var(--ff-display);
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: var(--white);
+            text-decoration: none;
+            transition: color 0.3s;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: mobileIn 0.4s var(--ease) forwards;
+        }
+
+        .mobile-overlay.open a:nth-child(2) { animation-delay: 0.05s; }
+        .mobile-overlay.open a:nth-child(3) { animation-delay: 0.10s; }
+        .mobile-overlay.open a:nth-child(4) { animation-delay: 0.15s; }
+        .mobile-overlay.open a:nth-child(5) { animation-delay: 0.20s; }
+        .mobile-overlay.open a:nth-child(6) { animation-delay: 0.25s; }
+
+        @keyframes mobileIn {
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .mobile-overlay a:hover { color: var(--amber); }
+
+        .mobile-close {
+            position: absolute;
+            top: 24px; right: 6%;
+            background: none; border: none;
+            color: var(--white);
+            font-size: 2rem;
+            cursor: pointer;
+            line-height: 1;
+        }
+
+        /* ────────────────────────────────────────────
+           HERO
+        ──────────────────────────────────────────── */
+        #home {
+            min-height: 100vh;
+            background: var(--bg-dark);
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-left {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 120px 8% 80px 8%;
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.72rem;
+            letter-spacing: 0.22em;
+            text-transform: uppercase;
+            color: var(--amber);
+            margin-bottom: 2rem;
+            opacity: 0;
+            animation: fadeUp 0.8s var(--ease) 0.3s forwards;
+        }
+
+        .hero-badge::before {
+            content: '';
+            display: block;
+            width: 28px; height: 1px;
+            background: var(--amber);
+        }
+
+        .hero-title {
+            font-family: var(--ff-display);
+            font-size: clamp(3.2rem, 5.5vw, 5.5rem);
+            font-weight: 900;
+            line-height: 1.04;
+            color: var(--white);
+            margin-bottom: 1.6rem;
+            opacity: 0;
+            animation: fadeUp 0.8s var(--ease) 0.5s forwards;
+        }
+
+        .hero-title em {
+            font-style: italic;
+            color: var(--amber-light);
+        }
+
+        .hero-sub {
+            font-size: 1rem;
+            color: rgba(254,252,246,0.6);
+            line-height: 1.85;
+            max-width: 400px;
+            margin-bottom: 2.5rem;
+            opacity: 0;
+            animation: fadeUp 0.8s var(--ease) 0.7s forwards;
+        }
+
+        .hero-cta {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            opacity: 0;
+            animation: fadeUp 0.8s var(--ease) 0.9s forwards;
+        }
+
+        .btn-primary {
+            padding: 14px 32px;
+            background: var(--amber);
+            color: var(--white);
+            border: none;
+            font-family: var(--ff-body);
+            font-size: 0.8rem;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            text-decoration: none;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            display: inline-block;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .btn-primary::before {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%;
+            width: 100%; height: 100%;
+            background: var(--amber-light);
+            transition: left 0.35s var(--ease);
+        }
+
+        .btn-primary:hover { box-shadow: 0 8px 25px rgba(196,122,43,0.4); transform: translateY(-2px); }
+        .btn-primary:hover::before { left: 0; }
+        .btn-primary span { position: relative; z-index: 1; }
+
+        .btn-ghost {
+            padding: 14px 32px;
+            border: 1px solid rgba(254,252,246,0.25);
+            color: var(--white);
+            font-family: var(--ff-body);
+            font-size: 0.8rem;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            text-decoration: none;
+            transition: all 0.3s;
+            display: inline-block;
+        }
+
+        .btn-ghost:hover { border-color: var(--amber); color: var(--amber); }
+
+        .hero-right {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-right img {
+            width: 100%; height: 100%;
+            object-fit: cover;
+            opacity: 0.7;
+            transform: scale(1.06);
+            animation: slowZoom 14s ease forwards;
+        }
+
+        .hero-right::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to right, var(--bg-dark) 0%, rgba(26,14,7,0.3) 50%, transparent 100%);
+            z-index: 1;
+        }
+
+        .hero-stats {
+            position: absolute;
+            bottom: 55px; right: 40px;
+            display: flex;
+            gap: 2.5rem;
+            z-index: 2;
+            opacity: 0;
+            animation: fadeUp 0.8s var(--ease) 1.1s forwards;
+        }
+
+        .stat-num {
+            font-family: var(--ff-display);
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: var(--amber-light);
+            display: block;
+            line-height: 1;
+        }
+
+        .stat-label {
+            font-size: 0.68rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: rgba(254,252,246,0.45);
+            margin-top: 4px;
+            display: block;
+        }
+
+        .scroll-hint {
+            position: absolute;
+            bottom: 40px; left: 8%;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: rgba(254,252,246,0.35);
+            font-size: 0.7rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            opacity: 0;
+            animation: fadeUp 0.8s var(--ease) 1.3s forwards;
+        }
+
+        .scroll-line {
+            width: 1px; height: 50px;
+            background: linear-gradient(to bottom, transparent, var(--amber));
+            animation: scrollLine 2s ease-in-out infinite;
+        }
+
+        /* ────────────────────────────────────────────
+           MARQUEE
+        ──────────────────────────────────────────── */
+        .marquee-bar {
+            background: var(--amber);
+            padding: 11px 0;
+            overflow: hidden;
+            white-space: nowrap;
+        }
+
+        .marquee-track {
+            display: inline-flex;
+            gap: 2rem;
+            animation: marquee 24s linear infinite;
+        }
+
+        .m-item {
+            font-family: var(--ff-display);
+            font-style: italic;
+            font-size: 0.88rem;
+            color: var(--white);
+            flex-shrink: 0;
+        }
+
+        .m-dot { color: rgba(255,255,255,0.45); }
+
+        /* ────────────────────────────────────────────
+           SECTION BASE
+        ──────────────────────────────────────────── */
+        section { padding: 96px 8%; }
+
+        .eyebrow {
+            font-size: 0.72rem;
+            letter-spacing: 0.22em;
+            text-transform: uppercase;
+            color: var(--amber);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 0.9rem;
+        }
+
+        .eyebrow::before {
+            content: '';
+            width: 24px; height: 1px;
+            background: var(--amber);
+        }
+
+        .section-title {
+            font-family: var(--ff-display);
+            font-size: clamp(2rem, 3.5vw, 3.2rem);
+            font-weight: 700;
+            line-height: 1.15;
+            color: var(--text);
+            margin-bottom: 1.4rem;
+        }
+
+        /* ────────────────────────────────────────────
+           ABOUT
+        ──────────────────────────────────────────── */
+        #about {
+            background: var(--white);
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 7%;
+            align-items: center;
+            padding: 96px 8%;
+        }
+
+        .about-img-wrap { position: relative; }
+
+        .about-img {
+            width: 100%; height: 560px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .about-frame {
+            position: absolute;
+            bottom: -22px; right: -22px;
+            width: 170px; height: 170px;
+            border: 3px solid var(--amber);
+            z-index: -1;
+        }
+
+        .about-badge {
+            position: absolute;
+            bottom: 28px; left: -28px;
+            background: var(--amber);
+            color: var(--white);
+            padding: 18px 22px;
+            font-family: var(--ff-display);
+            z-index: 2;
+        }
+
+        .about-badge strong { display: block; font-size: 2rem; font-weight: 900; line-height: 1; }
+        .about-badge span { font-size: 0.72rem; font-style: italic; opacity: 0.9; }
+
+        .about-text p { color: var(--text-mid); margin-bottom: 1.1rem; font-size: 0.97rem; }
+
+        .about-sig {
+            font-family: var(--ff-display);
+            font-style: italic;
+            font-size: 1.5rem;
+            color: var(--amber);
+            margin-top: 1.8rem;
+        }
+
+        /* ────────────────────────────────────────────
+           MENU
+        ──────────────────────────────────────────── */
+        #menu { background: var(--bg); }
+
+        .menu-head {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            margin-bottom: 2.8rem;
+        }
+
+        .tabs { display: flex; gap: 6px; }
+
+        .tab {
+            padding: 8px 22px;
+            border: 1px solid var(--cream-dark);
+            background: transparent;
+            font-family: var(--ff-body);
+            font-size: 0.78rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--text-mid);
+            cursor: pointer;
+            transition: all 0.25s;
+        }
+
+        .tab.active, .tab:hover {
+            background: var(--amber);
+            border-color: var(--amber);
+            color: var(--white);
+        }
+
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(255px, 1fr));
+            gap: 1.5rem;
+            transition: opacity 0.3s;
+        }
+
+        .menu-card {
+            background: var(--white);
+            overflow: hidden;
+            transition: transform 0.35s var(--ease), box-shadow 0.35s var(--ease);
+        }
+
+        .menu-card:hover {
+            transform: translateY(-7px);
+            box-shadow: 0 24px 48px rgba(44,24,16,0.13);
+        }
+
+        .card-img-wrap { overflow: hidden; }
+
+        .card-img {
+            width: 100%; height: 195px;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.6s var(--ease);
+        }
+
+        .menu-card:hover .card-img { transform: scale(1.06); }
+
+        .card-body { padding: 1.2rem; }
+
+        .card-name {
+            font-family: var(--ff-display);
+            font-size: 1.12rem;
+            font-weight: 600;
+            color: var(--text);
+            margin-bottom: 0.35rem;
+        }
+
+        .card-desc {
+            font-size: 0.83rem;
+            color: var(--text-light);
+            line-height: 1.65;
+            margin-bottom: 1rem;
+        }
+
+        .card-foot {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .card-price {
+            font-family: var(--ff-display);
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--amber);
+        }
+
+        .card-tag {
+            font-size: 0.68rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--text-light);
+            background: var(--cream);
+            padding: 3px 8px;
+        }
+
+        /* ────────────────────────────────────────────
+           GALLERY
+        ──────────────────────────────────────────── */
+        #gallery {
+            background: var(--bg-dark);
+            padding: 96px 8%;
+        }
+
+        #gallery .eyebrow { color: var(--amber-light); }
+        #gallery .eyebrow::before { background: var(--amber-light); }
+        #gallery .section-title { color: var(--white); }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            grid-template-rows: 270px 270px;
+            gap: 10px;
+            margin-top: 2.5rem;
+        }
+
+        .gallery-item {
+            overflow: hidden;
+            position: relative;
+        }
+
+        .gallery-item:first-child {
+            grid-column: 1 / 3;
+            grid-row: 1 / 3;
+        }
+
+        .gallery-item img {
+            width: 100%; height: 100%;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.6s var(--ease), filter 0.4s;
+            filter: brightness(0.82) saturate(0.85);
+        }
+
+        .gallery-item:hover img {
+            transform: scale(1.08);
+            filter: brightness(1) saturate(1.15);
+        }
+
+        .gallery-cap {
+            position: absolute;
+            bottom: 0; left: 0; right: 0;
+            padding: 16px;
+            background: linear-gradient(to top, rgba(26,14,7,0.8), transparent);
+            color: rgba(254,252,246,0.8);
+            font-family: var(--ff-display);
+            font-style: italic;
+            font-size: 0.9rem;
+            transform: translateY(100%);
+            transition: transform 0.35s var(--ease);
+        }
+
+        .gallery-item:hover .gallery-cap { transform: translateY(0); }
+
+        /* ────────────────────────────────────────────
+           TESTIMONIALS
+        ──────────────────────────────────────────── */
+        #testimonials {
+            background: var(--cream);
+        }
+
+        .testi-header { text-align: center; margin-bottom: 3rem; }
+        .testi-header .eyebrow { justify-content: center; }
+
+        .testi-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .testi-card {
+            background: var(--white);
+            padding: 2rem;
+            transition: transform 0.3s var(--ease), box-shadow 0.3s;
+        }
+
+        .testi-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 45px rgba(44,24,16,0.1);
+        }
+
+        .testi-quote {
+            font-family: var(--ff-display);
+            font-size: 4.5rem;
+            color: var(--amber);
+            line-height: 0.5;
+            margin-bottom: 1.2rem;
+            display: block;
+        }
+
+        .testi-text {
+            font-style: italic;
+            color: var(--text-mid);
+            font-size: 0.93rem;
+            line-height: 1.85;
+            margin-bottom: 1.5rem;
+        }
+
+        .testi-author {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .author-pic {
+            width: 42px; height: 42px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .author-name {
+            font-family: var(--ff-display);
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--text);
+        }
+
+        .author-info {
+            font-size: 0.73rem;
+            color: var(--text-light);
+        }
+
+        .stars {
+            margin-left: auto;
+            color: var(--gold);
+            font-size: 0.85rem;
+            letter-spacing: 2px;
+        }
+
+        /* ────────────────────────────────────────────
+           CONTACT
+        ──────────────────────────────────────────── */
+        #contact {
+            background: var(--white);
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 7%;
+            align-items: start;
+            padding: 96px 8%;
+        }
+
+        .cinfo-block {
+            display: flex;
+            align-items: flex-start;
+            gap: 16px;
+            margin-bottom: 1.8rem;
+            padding-bottom: 1.8rem;
+            border-bottom: 1px solid var(--cream);
+        }
+
+        .cinfo-block:last-child { border-bottom: none; }
+
+        .cinfo-icon {
+            width: 44px; height: 44px;
+            background: var(--cream);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            flex-shrink: 0;
+        }
+
+        .cinfo-label {
+            font-family: var(--ff-display);
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--text);
+            margin-bottom: 0.3rem;
+        }
+
+        .cinfo-val, .cinfo-val a {
+            font-size: 0.88rem;
+            color: var(--text-mid);
+            text-decoration: none;
+            line-height: 1.6;
+        }
+
+        .cinfo-val a:hover { color: var(--amber); }
+
+        .hours-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.85rem;
+            padding: 4px 0;
+            border-bottom: 1px solid rgba(221,208,181,0.4);
+        }
+
+        .hours-row:last-child { border-bottom: none; }
+        .hours-row span:last-child { color: var(--amber); font-weight: 500; }
+
+        .form-wrap { display: flex; flex-direction: column; gap: 1rem; }
+
+        .form-row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+
+        .form-group { display: flex; flex-direction: column; gap: 5px; }
+
+        .form-label {
+            font-size: 0.72rem;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--text-mid);
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            padding: 11px 15px;
+            border: 1px solid var(--cream-dark);
+            background: var(--bg);
+            font-family: var(--ff-body);
+            font-size: 0.88rem;
+            color: var(--text);
+            outline: none;
+            transition: border-color 0.3s;
+            width: 100%;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus { border-color: var(--amber); }
+
+        .form-group textarea { min-height: 115px; resize: vertical; }
+
+        .form-success {
+            display: none;
+            background: var(--cream);
+            border-left: 3px solid var(--amber);
+            padding: 14px 18px;
+            font-family: var(--ff-display);
+            font-style: italic;
+            color: var(--text);
+            font-size: 0.95rem;
+        }
+
+        /* ────────────────────────────────────────────
+           FOOTER
+        ──────────────────────────────────────────── */
+        footer {
+            background: var(--bg-dark);
+            padding: 64px 8% 28px;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 3rem;
+            margin-bottom: 3rem;
+            padding-bottom: 3rem;
+            border-bottom: 1px solid rgba(255,255,255,0.07);
+        }
+
+        .f-logo {
+            font-family: var(--ff-display);
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: var(--white);
+        }
+
+        .f-logo span { color: var(--amber); }
+
+        .f-tagline {
+            font-style: italic;
+            color: rgba(254,252,246,0.4);
+            font-size: 0.88rem;
+            margin: 6px 0 1.4rem;
+        }
+
+        .f-desc {
+            color: rgba(254,252,246,0.35);
+            font-size: 0.83rem;
+            line-height: 1.75;
+        }
+
+        .f-head {
+            font-size: 0.7rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--amber);
+            margin-bottom: 1.2rem;
+        }
+
+        .f-list { list-style: none; display: flex; flex-direction: column; gap: 0.6rem; }
+
+        .f-list a {
+            color: rgba(254,252,246,0.4);
+            text-decoration: none;
+            font-size: 0.85rem;
+            transition: color 0.3s;
+        }
+
+        .f-list a:hover { color: var(--amber); }
+
+        .footer-bottom {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .f-copy { color: rgba(254,252,246,0.25); font-size: 0.78rem; }
+
+        .socials { display: flex; gap: 10px; }
+
+        .soc {
+            width: 34px; height: 34px;
+            border: 1px solid rgba(255,255,255,0.12);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: rgba(254,252,246,0.4);
+            text-decoration: none;
+            font-size: 0.75rem;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .soc:hover { border-color: var(--amber); color: var(--amber); }
+
+        /* ────────────────────────────────────────────
+           ANIMATIONS
+        ──────────────────────────────────────────── */
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(28px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes slowZoom {
+            from { transform: scale(1.06); }
+            to   { transform: scale(1); }
+        }
+
+        @keyframes marquee {
+            from { transform: translateX(0); }
+            to   { transform: translateX(-50%); }
+        }
+
+        @keyframes scrollLine {
+            0%, 100% { opacity: 0.3; transform: scaleY(1); }
+            50%       { opacity: 1;   transform: scaleY(1.3); }
+        }
+
+        .reveal {
+            opacity: 0;
+            transform: translateY(26px);
+            transition: opacity 0.7s var(--ease), transform 0.7s var(--ease);
+        }
+
+        .reveal.in { opacity: 1; transform: translateY(0); }
+
+        /* ────────────────────────────────────────────
+           RESPONSIVE
+        ──────────────────────────────────────────── */
+        @media (max-width: 960px) {
+            #home { grid-template-columns: 1fr; }
+            .hero-right { display: none; }
+            .hero-left { padding: 140px 6% 80px; }
+            #about { grid-template-columns: 1fr; padding: 80px 6%; }
+            .about-img-wrap { order: -1; }
+            .about-img { height: 360px; }
+            .about-badge { left: 16px; }
+            .about-frame { display: none; }
+            #contact { grid-template-columns: 1fr; padding: 80px 6%; }
+            .footer-grid { grid-template-columns: 1fr 1fr; }
+            .gallery-grid {
+                grid-template-columns: 1fr 1fr;
+                grid-template-rows: auto;
+            }
+            .gallery-item:first-child { grid-column: auto; grid-row: auto; }
+            .nav-links { display: none; }
+            .hamburger { display: flex; }
+        }
+
+        @media (max-width: 600px) {
+            section { padding: 64px 5%; }
+            #about, #contact { padding: 64px 5%; }
+            .footer-grid { grid-template-columns: 1fr; }
+            .gallery-grid { grid-template-columns: 1fr; }
+            .hero-stats { display: none; }
+            .scroll-hint { display: none; }
+            .form-row2 { grid-template-columns: 1fr; }
+            .hero-left { padding: 110px 5% 64px; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- ═══ NAVBAR ═══ -->
+<nav id="nav">
+    <a href="#home" class="nav-logo">Chai <span>&</span> Chronicles</a>
+    <ul class="nav-links">
+        <li><a href="#home">Home</a></li>
+        <li><a href="#about">Our Story</a></li>
+        <li><a href="#menu">Menu</a></li>
+        <li><a href="#gallery">Gallery</a></li>
+        <li><a href="#contact">Visit Us</a></li>
+    </ul>
+    <button class="hamburger" id="ham" aria-label="Open menu">
+        <span></span><span></span><span></span>
+    </button>
+</nav>
+
+<!-- ═══ MOBILE OVERLAY ═══ -->
+<div class="mobile-overlay" id="mobileMenu">
+    <button class="mobile-close" id="mobileClose">✕</button>
+    <a href="#home"        onclick="closeMenu()">Home</a>
+    <a href="#about"       onclick="closeMenu()">Our Story</a>
+    <a href="#menu"        onclick="closeMenu()">Menu</a>
+    <a href="#gallery"     onclick="closeMenu()">Gallery</a>
+    <a href="#contact"     onclick="closeMenu()">Visit Us</a>
+</div>
+
+<!-- ═══ HERO ═══ -->
+<section id="home">
+    <div class="hero-left">
+        <div class="hero-badge">Est. 2014 &nbsp;·&nbsp; Abids, Hyderabad</div>
+        <h1 class="hero-title">Where<br>Every <em>Sip</em><br>Tells a Story</h1>
+        <p class="hero-sub">Step into Hyderabad's finest Irani Chai experience. Brewed slow, served warm, steeped in generations of culture.</p>
+        <div class="hero-cta">
+            <a href="#menu" class="btn-primary"><span>Explore Menu</span></a>
+            <a href="#contact" class="btn-ghost">Find Us</a>
+        </div>
+        <div class="scroll-hint">
+            <div class="scroll-line"></div>
+            Scroll to explore
+        </div>
+    </div>
+    <div class="hero-right">
+        <img src="https://images.unsplash.com/photo-1571934811356-5cc061b6821f?w=900&auto=format&fit=crop&q=80" alt="Chai being poured">
+        <div class="hero-stats">
+            <div>
+                <span class="stat-num">10+</span>
+                <span class="stat-label">Years Brewing</span>
+            </div>
+            <div>
+                <span class="stat-num">24</span>
+                <span class="stat-label">Chai Varieties</span>
+            </div>
+            <div>
+                <span class="stat-num">5★</span>
+                <span class="stat-label">Google Rated</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ═══ MARQUEE ═══ -->
+<div class="marquee-bar">
+    <div class="marquee-track" id="marqueeTrack">
+        <span class="m-item">Irani Chai</span><span class="m-dot"> ◆ </span>
+        <span class="m-item">Osmania Biscuits</span><span class="m-dot"> ◆ </span>
+        <span class="m-item">Kesar Chai</span><span class="m-dot"> ◆ </span>
+        <span class="m-item">Masala Chai</span><span class="m-dot"> ◆ </span>
+        <span class="m-item">Sulaimani Tea</span><span class="m-dot"> ◆ </span>
+        <span class="m-item">Kadak Chai</span><span class="m-dot"> ◆ </span>
+        <span class="m-item">Bun Maska</span><span class="m-dot"> ◆ </span>
+        <span class="m-item">Irani Chai</span><span class="m-dot"> ◆ </span>
+        <span class="m-item">Osmania Biscuits</span><span class="m-dot"> ◆ </span>
+        <span class="m-item">Kesar Chai</span><span class="m-dot"> ◆ </span>
+        <span class="m-item">Masala Chai</span><span class="m-dot"> ◆ </span>
+        <span class="m-item">Sulaimani Tea</span><span class="m-dot"> ◆ </span>
+        <span class="m-item">Kadak Chai</span><span class="m-dot"> ◆ </span>
+        <span class="m-item">Bun Maska</span><span class="m-dot"> ◆ </span>
+    </div>
+</div>
+
+<!-- ═══ ABOUT ═══ -->
+<section id="about">
+    <div class="about-img-wrap reveal">
+        <img src="https://images.unsplash.com/photo-1554118811-1e0d58224f24?w=700&auto=format&fit=crop&q=80" alt="Chai Chronicles café interior" class="about-img">
+        <div class="about-frame"></div>
+        <div class="about-badge">
+            <strong>10+</strong>
+            <span>Years Brewing Stories</span>
+        </div>
+    </div>
+    <div class="about-text reveal">
+        <div class="eyebrow">Our Story</div>
+        <h2 class="section-title">A Cup Full of<br>Hyderabadi Heritage</h2>
+        <p>Born in 2014 in the bustling lanes of Abids, Chai Chronicles was built on one simple belief — a perfect cup of chai can carry the weight of an entire culture.</p>
+        <p>We brew our Irani chai the old way: slow simmered, full cream, steeped with tradition. Every Osmania biscuit is baked fresh at dawn. Every cup poured with care and intention. It's not just tea — it's an emotion that Hyderabadis have cherished for generations.</p>
+        <p>Today, our humble café has become a neighbourhood institution — where students debate, elders reminisce, and strangers become lifelong friends over chai that never disappoints.</p>
+        <div class="about-sig">— Ahmed & Fatima, Founders</div>
+    </div>
+</section>
+
+<!-- ═══ MENU ═══ -->
+<section id="menu">
+    <div class="menu-head">
+        <div>
+            <div class="eyebrow">Our Menu</div>
+            <h2 class="section-title">Crafted With<br>Love &amp; Spice</h2>
+        </div>
+        <div class="tabs">
+            <button class="tab active" data-tab="chai">Chai</button>
+            <button class="tab" data-tab="bites">Bites</button>
+            <button class="tab" data-tab="specials">Specials</button>
+        </div>
+    </div>
+    <div class="menu-grid" id="menuGrid"></div>
+</section>
+
+<!-- ═══ GALLERY ═══ -->
+<section id="gallery">
+    <div class="eyebrow">Gallery</div>
+    <h2 class="section-title">Moments <em style="font-style:italic;color:var(--amber-light)">Steeped</em><br>in Time</h2>
+    <div class="gallery-grid reveal">
+        <div class="gallery-item">
+            <img src="https://images.unsplash.com/photo-1556679343-c7306c1976bc?w=800&auto=format&fit=crop&q=80" alt="Chai glass close-up">
+            <div class="gallery-cap">The Perfect Pour</div>
+        </div>
+        <div class="gallery-item">
+            <img src="https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=500&auto=format&fit=crop&q=80" alt="Café atmosphere">
+            <div class="gallery-cap">Morning Ritual</div>
+        </div>
+        <div class="gallery-item">
+            <img src="https://images.unsplash.com/photo-1558961363-fa8fdf82db35?w=500&auto=format&fit=crop&q=80" alt="Biscuits and snacks">
+            <div class="gallery-cap">Osmania Bliss</div>
+        </div>
+        <div class="gallery-item">
+            <img src="https://images.unsplash.com/photo-1571934811356-5cc061b6821f?w=500&auto=format&fit=crop&q=80" alt="Chai brewing">
+            <div class="gallery-cap">Brewed Slow</div>
+        </div>
+        <div class="gallery-item">
+            <img src="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=500&auto=format&fit=crop&q=80" alt="Evening at the café">
+            <div class="gallery-cap">Evening Stories</div>
+        </div>
+    </div>
+</section>
+
+<!-- ═══ TESTIMONIALS ═══ -->
+<section id="testimonials">
+    <div class="testi-header">
+        <div class="eyebrow">What People Say</div>
+        <h2 class="section-title">Stories Over Chai</h2>
+    </div>
+    <div class="testi-grid">
+        <div class="testi-card reveal">
+            <span class="testi-quote">"</span>
+            <p class="testi-text">The Irani Chai here is exactly like what my nani used to make. That deep, creamy, perfectly sweetened glass — it transports you back in time. Chai Chronicles is Hyderabad's best-kept secret.</p>
+            <div class="testi-author">
+                <img src="https://i.pravatar.cc/80?img=11" alt="" class="author-pic">
+                <div>
+                    <div class="author-name">Zara Hussain</div>
+                    <div class="author-info">Regular · Banjara Hills</div>
+                </div>
+                <div class="stars">★★★★★</div>
+            </div>
+        </div>
+        <div class="testi-card reveal">
+            <span class="testi-quote">"</span>
+            <p class="testi-text">Three years of daily visits and this place still surprises me. The Osmania biscuits dipped in Irani chai is a ritual I refuse to give up. The owners know your name. It feels like family.</p>
+            <div class="testi-author">
+                <img src="https://i.pravatar.cc/80?img=32" alt="" class="author-pic">
+                <div>
+                    <div class="author-name">Rahul Sharma</div>
+                    <div class="author-info">Daily Visitor · Himayatnagar</div>
+                </div>
+                <div class="stars">★★★★★</div>
+            </div>
+        </div>
+        <div class="testi-card reveal">
+            <span class="testi-quote">"</span>
+            <p class="testi-text">Tried the Kesar Chai during Ramadan — absolutely divine. The subtle saffron aroma, the warmth of cardamom. This is the kind of chai that makes you close your eyes and just breathe. Outstanding.</p>
+            <div class="testi-author">
+                <img src="https://i.pravatar.cc/80?img=47" alt="" class="author-pic">
+                <div>
+                    <div class="author-name">Ayesha Khan</div>
+                    <div class="author-info">Food Blogger · Old City</div>
+                </div>
+                <div class="stars">★★★★★</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ═══ CONTACT ═══ -->
+<section id="contact">
+    <div>
+        <div class="eyebrow">Visit Us</div>
+        <h2 class="section-title">Come For The Chai,<br>Stay For<br>The Warmth</h2>
+        <br>
+        <div class="cinfo-block reveal">
+            <div class="cinfo-icon">📍</div>
+            <div>
+                <div class="cinfo-label">Location</div>
+                <div class="cinfo-val">12-4-89, Abids Road, Near Jubilee Bus Station<br>Hyderabad, Telangana — 500 001</div>
+            </div>
+        </div>
+        <div class="cinfo-block reveal">
+            <div class="cinfo-icon">🕐</div>
+            <div>
+                <div class="cinfo-label">Opening Hours</div>
+                <div class="cinfo-val">
+                    <div class="hours-row"><span>Monday – Friday</span><span>6:00 AM – 10:30 PM</span></div>
+                    <div class="hours-row"><span>Saturday</span><span>6:00 AM – 11:30 PM</span></div>
+                    <div class="hours-row"><span>Sunday</span><span>7:00 AM – 10:00 PM</span></div>
+                </div>
+            </div>
+        </div>
+        <div class="cinfo-block reveal">
+            <div class="cinfo-icon">📞</div>
+            <div>
+                <div class="cinfo-label">Get in Touch</div>
+                <div class="cinfo-val">
+                    <a href="tel:+914023456789">+91 40 2345 6789</a><br>
+                    <a href="mailto:hello@chaichronicles.in">hello@chaichronicles.in</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="reveal">
+        <div class="eyebrow">Send a Message</div>
+        <h3 class="section-title" style="font-size:2rem">We'd Love to<br>Hear From You</h3>
+        <br>
+        <div class="form-wrap" id="formWrap">
+            <div class="form-row2">
+                <div class="form-group">
+                    <label class="form-label">Your Name</label>
+                    <input type="text" placeholder="Ahmed Khan" id="f_name">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Phone / Email</label>
+                    <input type="text" placeholder="+91 98765 43210" id="f_contact">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Subject</label>
+                <select id="f_subject">
+                    <option value="">Select a topic...</option>
+                    <option>Table Reservation</option>
+                    <option>Bulk Order / Catering</option>
+                    <option>Franchise Enquiry</option>
+                    <option>General Feedback</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Message</label>
+                <textarea placeholder="Your message here..." id="f_message"></textarea>
+            </div>
+            <button class="btn-primary" id="submitBtn" onclick="handleSubmit()" style="align-self:flex-start">
+                <span>Send Message →</span>
+            </button>
+            <div class="form-success" id="formSuccess">
+                ✓ &nbsp; Shukria! Your message has been received. We will get back to you shortly, over a warm cup of chai. ☕
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ═══ FOOTER ═══ -->
+<footer>
+    <div class="footer-grid">
+        <div>
+            <div class="f-logo">Chai <span>&</span> Chronicles</div>
+            <p class="f-tagline">Where Every Sip Tells a Story</p>
+            <p class="f-desc">Serving Hyderabad's finest Irani chai since 2014. A beloved neighbourhood café rooted in warmth, tradition, and the perfect brew.</p>
+        </div>
+        <div>
+            <div class="f-head">Quick Links</div>
+            <ul class="f-list">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#about">Our Story</a></li>
+                <li><a href="#menu">Menu</a></li>
+                <li><a href="#gallery">Gallery</a></li>
+                <li><a href="#contact">Visit Us</a></li>
+            </ul>
+        </div>
+        <div>
+            <div class="f-head">Menu</div>
+            <ul class="f-list">
+                <li><a href="#menu">Irani Chai</a></li>
+                <li><a href="#menu">Masala Chai</a></li>
+                <li><a href="#menu">Kesar Chai</a></li>
+                <li><a href="#menu">Osmania Biscuits</a></li>
+                <li><a href="#menu">Bun Maska</a></li>
+            </ul>
+        </div>
+        <div>
+            <div class="f-head">Contact</div>
+            <ul class="f-list">
+                <li><a href="#">Abids, Hyderabad</a></li>
+                <li><a href="tel:+914023456789">+91 40 2345 6789</a></li>
+                <li><a href="mailto:hello@chaichronicles.in">hello@chaichronicles.in</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <p class="f-copy">© 2025 Chai Chronicles. Crafted with ☕ in Hyderabad.</p>
+        <div class="socials">
+            <a href="#" class="soc">IG</a>
+            <a href="#" class="soc">FB</a>
+            <a href="#" class="soc">TW</a>
+            <a href="#" class="soc">YT</a>
+        </div>
+    </div>
+</footer>
+
+<script>
+/* ══ MENU DATA ══ */
+const MENU = {
+    chai: [
+        {
+            name: 'Classic Irani Chai',
+            desc: 'Slow-simmered full cream milk, loose leaf CTC, sweetened to perfection. The one that started it all.',
+            price: '&#8377;30', tag: 'Bestseller',
+            img: 'https://images.unsplash.com/photo-1571934811356-5cc061b6821f?w=400&auto=format&fit=crop&q=80'
+        },
+        {
+            name: 'Kesar Chai',
+            desc: 'Premium saffron strands with cardamom and rose water. A royal blend for refined palates.',
+            price: '&#8377;60', tag: 'Premium',
+            img: 'https://images.unsplash.com/photo-1556679343-c7306c1976bc?w=400&auto=format&fit=crop&q=80'
+        },
+        {
+            name: 'Masala Chai',
+            desc: 'Bold CTC tea infused with ginger, cardamom, cinnamon and cloves. A warming, spiced classic.',
+            price: '&#8377;35', tag: 'Popular',
+            img: 'https://images.unsplash.com/photo-1544787219-7f47ccb76574?w=400&auto=format&fit=crop&q=80'
+        },
+        {
+            name: 'Sulaimani Tea',
+            desc: 'Light, fragrant black tea with lemon, mint and spices. The perfect Hyderabadi post-meal ritual.',
+            price: '&#8377;40', tag: 'Digestif',
+            img: 'https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=400&auto=format&fit=crop&q=80'
+        }
+    ],
+    bites: [
+        {
+            name: 'Osmania Biscuits',
+            desc: "The legendary Hyderabadi biscuit. Butter-rich, mildly sweet, crumbly. Baked fresh every dawn.",
+            price: '&#8377;15', tag: 'Must Try',
+            img: 'https://images.unsplash.com/photo-1558961363-fa8fdf82db35?w=400&auto=format&fit=crop&q=80'
+        },
+        {
+            name: 'Bun Maska',
+            desc: 'Soft, pillowy bun generously slathered with salted Amul butter. Simple. Perfect. Timeless.',
+            price: '&#8377;25', tag: 'Classic',
+            img: 'https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=400&auto=format&fit=crop&q=80'
+        },
+        {
+            name: 'Kheema Samosa',
+            desc: 'Flaky pastry stuffed with spiced lamb keema, fried to a perfect golden crunch.',
+            price: '&#8377;40', tag: 'Popular',
+            img: 'https://images.unsplash.com/photo-1601050690597-df0568f70950?w=400&auto=format&fit=crop&q=80'
+        },
+        {
+            name: 'Lukhmi',
+            desc: "Hyderabad's iconic square keema pastry — crisp, savoury, and unlike anything else.",
+            price: '&#8377;35', tag: 'Local Fave',
+            img: 'https://images.unsplash.com/photo-1571091718767-18b5b1457add?w=400&auto=format&fit=crop&q=80'
+        }
+    ],
+    specials: [
+        {
+            name: 'Kadak Dawat Chai',
+            desc: 'Extra strong, extra sweet — double brewed for those who take their chai very seriously.',
+            price: '&#8377;45', tag: 'Seasonal',
+            img: 'https://images.unsplash.com/photo-1571934811356-5cc061b6821f?w=400&auto=format&fit=crop&q=80'
+        },
+        {
+            name: 'Rose Kashmiri Chai',
+            desc: 'Pink Kashmiri chai with rose syrup and crushed pistachios. As beautiful as it is delicious.',
+            price: '&#8377;75', tag: 'Weekend Only',
+            img: 'https://images.unsplash.com/photo-1556679343-c7306c1976bc?w=400&auto=format&fit=crop&q=80'
+        },
+        {
+            name: 'Chai Combo',
+            desc: 'One Irani Chai + two Osmania biscuits + Bun Maska. The complete Hyderabadi experience.',
+            price: '&#8377;65', tag: 'Best Value',
+            img: 'https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=400&auto=format&fit=crop&q=80'
+        },
+        {
+            name: 'Ramadan Special',
+            desc: 'Date & saffron chai with baklava. Available during Ramadan season only. Order ahead.',
+            price: '&#8377;90', tag: 'Limited',
+            img: 'https://images.unsplash.com/photo-1544787219-7f47ccb76574?w=400&auto=format&fit=crop&q=80'
+        }
+    ]
+};
+
+function renderMenu(tab) {
+    const grid = document.getElementById('menuGrid');
+    grid.innerHTML = MENU[tab].map(item => `
+        <div class="menu-card reveal">
+            <div class="card-img-wrap">
+                <img src="${item.img}" alt="${item.name}" class="card-img" loading="lazy">
+            </div>
+            <div class="card-body">
+                <div class="card-name">${item.name}</div>
+                <div class="card-desc">${item.desc}</div>
+                <div class="card-foot">
+                    <span class="card-price">${item.price}</span>
+                    <span class="card-tag">${item.tag}</span>
+                </div>
+            </div>
+        </div>
+    `).join('');
+    revealObserve();
+}
+
+/* ══ TABS ══ */
+document.querySelectorAll('.tab').forEach(btn => {
+    btn.addEventListener('click', () => {
+        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+        btn.classList.add('active');
+        const grid = document.getElementById('menuGrid');
+        grid.style.opacity = '0';
+        setTimeout(() => {
+            renderMenu(btn.dataset.tab);
+            grid.style.opacity = '1';
+            grid.style.transition = 'opacity 0.35s';
+        }, 250);
+    });
+});
+
+/* ══ SCROLL REVEAL ══ */
+function revealObserve() {
+    const io = new IntersectionObserver((entries) => {
+        entries.forEach((e, i) => {
+            if (e.isIntersecting) {
+                setTimeout(() => e.target.classList.add('in'), i * 90);
+                io.unobserve(e.target);
+            }
+        });
+    }, { threshold: 0.1 });
+    document.querySelectorAll('.reveal:not(.in)').forEach(el => io.observe(el));
+}
+
+/* ══ NAVBAR ══ */
+window.addEventListener('scroll', () => {
+    document.getElementById('nav').classList.toggle('scrolled', scrollY > 70);
+});
+
+/* ══ MOBILE MENU ══ */
+document.getElementById('ham').addEventListener('click', () => {
+    document.getElementById('mobileMenu').classList.add('open');
+    document.body.style.overflow = 'hidden';
+});
+document.getElementById('mobileClose').addEventListener('click', closeMenu);
+function closeMenu() {
+    document.getElementById('mobileMenu').classList.remove('open');
+    document.body.style.overflow = '';
+}
+
+/* ══ CONTACT FORM ══ */
+function handleSubmit() {
+    const name = document.getElementById('f_name').value.trim();
+    const contact = document.getElementById('f_contact').value.trim();
+    if (!name || !contact) { alert('Please enter your name and contact details.'); return; }
+    document.getElementById('submitBtn').style.display = 'none';
+    document.getElementById('formSuccess').style.display = 'block';
+}
+
+/* ══ INIT ══ */
+renderMenu('chai');
+revealObserve();
+</script>
+</body>
+</html>
